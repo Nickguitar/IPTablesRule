@@ -49,9 +49,11 @@ $file = "/var/log/nginx/access.log";
 while(true) {
 
 	$tail = tail($file, 0);
-if(preg_match("/SSTP_DUPLEX|Analyze|\/\.env|\/GponForm\/diag_Form\?images\/|Hello| World|boaform|\.exe|\.cgi|certutil|urlcache|python|wget|drupal_ajax|Nimbostratus|\/admin\/formLogin|wordpress|wp-login.php|wp-admin.php|127\.0\.0\.1|sitemap\.xml|well-known\/security\.txt|zgrab|clear|x00|Palo Alto Networks company|NetSystemsResearch|\/hudson|\/clientaccesspolicy\.xml|\/owa\/auth\/logon\.aspx|bot\.html|\/ZOQc|\/GponForm\/diag_Form\?images\/|\/tmp|AhrefsBot|nikto|masscan|nmap|buster|wpscan|nimb/i", $tail)){
+	if(preg_match("/SSTP_DUPLEX|Analyze|\/\.env|\/GponForm\/diag_Form\?images\/|Hello| World|boaform|\.exe|\.cgi|certutil|urlcache|python|wget|drupal_ajax|Nimbostratus|\/admin\/formLogin|wordpress|wp-login.php|wp-admin.php|127\.0\.0\.1|sitemap\.xml|well-known\/security\.txt|zgrab|clear|x00|Palo Alto Networks company|NetSystemsResearch|\/hudson|\/clientaccesspolicy\.xml|\/owa\/auth\/logon\.aspx|bot\.html|\/ZOQc|\/GponForm\/diag_Form\?images\/|\/tmp|AhrefsBot|nikto|masscan|nmap|buster|wpscan|nimb/i", $tail)){
 		$ip = explode(" -",explode("] ",$tail)[1])[0];
-		shell_exec("sudo iptables -I INPUT -j DROP -s ".escapeshellarg($ip)); // hopefully it won't get shell injection from spoofed IP address  :pray:
-		shell_exec("echo 'Blocked: ".escapeshellarg($ip)."' >> blocked");
+		if(preg_match("/^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/", $ip) && $ip !== "0.0.0.0"){
+			shell_exec("sudo iptables -I INPUT -j DROP -s ".$ip);
+			shell_exec("echo 'Blocked: ".$ip).' >> blocked");
+		}
 	}
 }
