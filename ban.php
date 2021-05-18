@@ -7,7 +7,7 @@ set_time_limit(0);
 
 // # ./ban.php &
 // [1] 600
-// run as root or put nginx as sudoer to iptables
+// run as root or put your user as sudoer to iptables
 
 function tail($file,&$pos) { // literally  $ tail -F
 	if(!$pos) $pos = filesize($file);
