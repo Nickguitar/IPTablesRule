@@ -10,6 +10,7 @@ set_time_limit(0);
 // run as root or put your user as sudoer to iptables
 
 function tail($file,&$pos) { // literally  $ tail -F
+			     // I prefer not using shell_exec('tail -F $file') to prevent shell injection attempts
 	if(!$pos) $pos = filesize($file);
 	$fd = inotify_init();
 	$watch_descriptor = inotify_add_watch($fd, $file, IN_ALL_EVENTS);
