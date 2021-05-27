@@ -50,7 +50,7 @@ $file = "/var/log/nginx/access.log";
 while(true) {
 
 	$tail = tail($file, 0);
-	if(preg_match("/SSTP_DUPLEX|Analyze|\/\.env|\/GponForm\/diag_Form\?images\/|Hello| World|boaform|\.exe|\.cgi|certutil|urlcache|python|wget|drupal_ajax|Nimbostratus|\/admin\/formLogin|wordpress|wp-login.php|wp-admin.php|127\.0\.0\.1|sitemap\.xml|well-known\/security\.txt|zgrab|clear|x00|Palo Alto Networks company|NetSystemsResearch|\/hudson|\/clientaccesspolicy\.xml|\/owa\/auth\/logon\.aspx|bot\.html|\/ZOQc|\/GponForm\/diag_Form\?images\/|\/tmp|AhrefsBot|nikto|masscan|nmap|buster|wpscan|nimb/i", $tail)){
+	if(preg_match("/SSTP_DUPLEX|baidu|GponForm|ruthmori|Go-http-client|VLC\/|clients_live|system|shell|Analyze|\/\.env|\/GponForm\/diag_Form\?images\/|Hello| World|boaform|\.exe|\.cgi|certutil|urlcache|python|wget|drupal_ajax|Nimbostratus|\/admin\/formLogin|wordpress|wp-login.php|wp-admin.php|wp-includes|pma20..|PMA20..|mysqlmanager|db-admin|mysql-admin|phpmanager|phpmyadmin|mstshash=Admin|Mozi.m|phpMyAdmin|127\.0\.0\.1|execute-solution|CensysInspect|censys|well-known\/security\.txt|vicidial|is_the_shittiest_lang|boaform|formLogin|admin.php|zgrab|\\x[0-9a-fA-F]{2}|Palo Alto Networks company|NetSystemsResearch|\/hudson|\/clientaccesspolicy\.xml|\/owa\/auth\/logon\.aspx|bot\.html|\/ZOQc|\/GponForm\/diag_Form\?images\/|\/tmp|AhrefsBot|nikto|masscan|nmap|buster|wpscan|nimb/i", $tail)){
 		$ip = explode(" -",explode("] ",$tail)[1])[0];
 		if(preg_match("/^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/", $ip) && $ip !== "0.0.0.0"){
 			shell_exec("sudo iptables -I INPUT -j DROP -s ".$ip);
